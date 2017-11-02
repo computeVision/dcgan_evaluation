@@ -75,7 +75,7 @@ class Cfg:
     def generator(self):
         return self.__generator
 
-    def degenerator(self):
+    def discriminator(self):
         return self.__degenerator
 
     def __init__(self, file_path):
@@ -96,12 +96,12 @@ class Cfg:
             self.__generator['lrelu'] = self.__cfg['testing_benchmark']['generator']['lrelu']
             self.__generator['tanh'] = self.__cfg['testing_benchmark']['generator']['tanh']
             self.__generator['pooling'] = self.__cfg['testing_benchmark']['generator']['pooling']
-            self.__generator['batch_normalization'] = self.__cfg['testing_benchmark']['generator']['batch_normalization']
+            self.__generator['batch_norm'] = self.__cfg['testing_benchmark']['generator']['batch_norm']
 
             self.__degenerator['relu'] = self.__cfg['testing_benchmark']['degenerator']['relu']
             self.__degenerator['lrelu'] = self.__cfg['testing_benchmark']['degenerator']['lrelu']
             self.__degenerator['tanh'] = self.__cfg['testing_benchmark']['degenerator']['tanh']
-            self.__degenerator['batch_normalization'] = self.__cfg['testing_benchmark']['degenerator']['batch_normalization']
+            self.__degenerator['batch_norm'] = self.__cfg['testing_benchmark']['degenerator']['batch_norm']
 
         self.print_members()
         self.print_flags(FLAGS)

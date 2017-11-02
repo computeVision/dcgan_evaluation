@@ -18,10 +18,10 @@ testing_benchmark:
     lrelu: True
     tanh: True
     pooling: True
-    batch_normalization: True
+    batch_norm: True
 
   degenerator:
     relu: True
     lrelu: True
     tanh: True
-    batch_normalization: True
+    batch_norm: True
