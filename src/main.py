@@ -20,8 +20,8 @@ flags.DEFINE_integer("output_height", 64, "The size of the output images to prod
 flags.DEFINE_integer("output_width", None, "The size of the output images to produce. If None, same value as output_height [None]")
 flags.DEFINE_string("dataset", "celebA", "The name of dataset [celebA, mnist, lsun]")
 flags.DEFINE_string("input_fname_pattern", "*.jpg", "Glob pattern of filename of input images [*]")
-flags.DEFINE_string("checkpoint_dir", "checkpoint", "Directory name to save the checkpoints [checkpoint]")
-flags.DEFINE_string("sample_dir", "samples", "Directory name to save the image samples [samples]")
+flags.DEFINE_string("checkpoint_dir", "/home/jester/data/dcgan/checkpoint", "Directory name to save the checkpoints [checkpoint]")
+flags.DEFINE_string("sample_dir", "/home/jester/data/dcgan/samples", "Directory name to save the image samples [samples]")
 flags.DEFINE_boolean("train", False, "True for training, False for testing [False]")
 flags.DEFINE_boolean("crop", False, "True for training, False for testing [False]")
 flags.DEFINE_boolean("visualize", True, "True for visualizing, False for nothing [False]")
@@ -31,7 +31,6 @@ def main(_):
   pp.pprint(flags.FLAGS.__flags)
 
   cfg = Cfg('configs/config.yaml')
-
 
   if FLAGS.input_width is None:
     FLAGS.input_width = FLAGS.input_height
@@ -50,7 +49,7 @@ def main(_):
   with tf.Session(config=run_config) as sess:
     if FLAGS.dataset == 'mnist':
       dcgan = DCGAN(
-          sess,
+          sess, cfg,
           input_width=FLAGS.input_width,
           input_height=FLAGS.input_height,
           output_width=FLAGS.output_width,
@@ -65,7 +64,7 @@ def main(_):
           sample_dir=FLAGS.sample_dir)
     else:
       dcgan = DCGAN(
-          sess,
+          sess, cfg,
           input_width=FLAGS.input_width,
           input_height=FLAGS.input_height,
           output_width=FLAGS.output_width,

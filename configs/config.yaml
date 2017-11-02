@@ -24,5 +24,4 @@ testing_benchmark:
     relu: True
     lrelu: True
     tanh: True
-    pooling: True
     batch_normalization: True
