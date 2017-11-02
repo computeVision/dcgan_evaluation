@@ -4,6 +4,7 @@ import numpy as np
 
 from model import DCGAN
 from utils import pp, visualize, to_json, show_all_variables
+from config import *
 
 import tensorflow as tf
 
@@ -28,6 +29,9 @@ FLAGS = flags.FLAGS
 
 def main(_):
   pp.pprint(flags.FLAGS.__flags)
+
+  cfg = Cfg('configs/config.yaml')
+
 
   if FLAGS.input_width is None:
     FLAGS.input_width = FLAGS.input_height
@@ -81,7 +85,6 @@ def main(_):
     else:
       if not dcgan.load(FLAGS.checkpoint_dir)[0]:
         raise Exception("[!] Train a model first, then run test mode")
-
 
     # to_json("./web/js/layers.js", [dcgan.h0_w, dcgan.h0_b, dcgan.g_bn0],
     #                 [dcgan.h1_w, dcgan.h1_b, dcgan.g_bn1],

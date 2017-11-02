@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="edcc3464-58bd-4718-a042-9e2cd5506864" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/time.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/main (lh's conflicted copy 2017-10-27).py" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,7 +17,7 @@
       <file leaf-file-name="model.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7056">
+            <state relative-caret-position="0">
               <caret line="402" column="26" lean-forward="false" selection-start-line="402" selection-start-column="26" selection-end-line="402" selection-end-column="26" />
               <folding>
                 <element signature="e#0#31#0" expanded="true" />
@@ -29,46 +29,16 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="15" column="34" lean-forward="false" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="34" />
+            <state relative-caret-position="0">
+              <caret line="7" column="20" lean-forward="true" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
               <folding>
-                <element signature="e#0#9#0" expanded="true" />
                 <marker date="1509111789776" expanded="true" signature="3484:3894" ph="..." />
-                <marker date="1509111789776" expanded="true" signature="3490:3837" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_arange_6.png" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/samples/test_arange_6.png">
-          <provider selected="true" editor-type-id="images">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="000015.jpg" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/celebA/000015.jpg">
-          <provider selected="true" editor-type-id="images">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="000016.jpg" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/celebA/000016.jpg">
-          <provider selected="true" editor-type-id="images">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="000017.jpg" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/celebA/000017.jpg">
-          <provider selected="true" editor-type-id="images">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
@@ -81,11 +51,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="utils.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="utils.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="18" column="71" lean-forward="false" selection-start-line="18" selection-start-column="71" selection-end-line="18" selection-end-column="71" />
+            <state relative-caret-position="450">
+              <caret line="36" column="35" lean-forward="false" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
               <folding>
                 <element signature="e#60#91#0" expanded="true" />
               </folding>
@@ -115,6 +85,25 @@
     <option name="width" value="1615" />
     <option name="height" value="1054" />
   </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Python</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>PyCompatibilityInspection</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
@@ -130,8 +119,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -142,35 +131,14 @@
             <path>
               <item name="DCGAN-tensorflow" type="b2602c69:ProjectViewProjectNode" />
               <item name="DCGAN-tensorflow" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DCGAN-tensorflow" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DCGAN-tensorflow" type="462c0819:PsiDirectoryNode" />
-              <item name="checkpoint" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DCGAN-tensorflow" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DCGAN-tensorflow" type="462c0819:PsiDirectoryNode" />
               <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DCGAN-tensorflow" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DCGAN-tensorflow" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="celebA" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="DCGAN-tensorflow" type="b2602c69:ProjectViewProjectNode" />
-              <item name="DCGAN-tensorflow" type="462c0819:PsiDirectoryNode" />
-              <item name="samples" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -295,15 +263,15 @@
       <workItem from="1508920451030" duration="676000" />
       <workItem from="1509089769250" duration="2657000" />
       <workItem from="1509196055129" duration="18000" />
+      <workItem from="1509563622767" duration="124000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5198000" />
+    <option name="totallyTimeSpent" value="5322000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1745" y="-4" width="1615" height="1054" extended-state="6" />
-    <editor active="true" />
+    <frame x="1745" y="36" width="1615" height="1054" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -347,6 +315,37 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/data/celebA/000016.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/celebA/000017.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="18" column="71" lean-forward="false" selection-start-line="18" selection-start-column="71" selection-end-line="18" selection-end-column="71" />
+          <folding>
+            <element signature="e#60#91#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="648">
+            <caret line="36" column="6" lean-forward="false" selection-start-line="36" selection-start-column="6" selection-end-line="36" selection-end-column="71" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/model.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7056">
@@ -362,9 +361,7 @@
         <state relative-caret-position="144">
           <caret line="15" column="34" lean-forward="false" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="34" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
             <marker date="1509111789776" expanded="true" signature="3484:3894" ph="..." />
-            <marker date="1509111789776" expanded="true" signature="3490:3837" ph="..." />
           </folding>
         </state>
       </provider>
@@ -425,9 +422,7 @@
         <state relative-caret-position="180">
           <caret line="17" column="52" lean-forward="false" selection-start-line="17" selection-start-column="52" selection-end-line="17" selection-end-column="52" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
             <marker date="1509111789776" expanded="true" signature="3484:3894" ph="..." />
-            <marker date="1509111789776" expanded="true" signature="3490:3837" ph="..." />
           </folding>
         </state>
       </provider>
@@ -467,9 +462,7 @@
         <state relative-caret-position="90">
           <caret line="5" column="46" lean-forward="false" selection-start-line="5" selection-start-column="46" selection-end-line="5" selection-end-column="46" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
             <marker date="1509111789776" expanded="true" signature="3484:3894" ph="..." />
-            <marker date="1509111789776" expanded="true" signature="3490:3837" ph="..." />
           </folding>
         </state>
       </provider>
@@ -605,32 +598,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7056">
+        <state relative-caret-position="0">
           <caret line="402" column="26" lean-forward="false" selection-start-line="402" selection-start-column="26" selection-end-line="402" selection-end-column="26" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="18" column="71" lean-forward="false" selection-start-line="18" selection-start-column="71" selection-end-line="18" selection-end-column="71" />
-          <folding>
-            <element signature="e#60#91#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="15" column="34" lean-forward="false" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-            <marker date="1509111789776" expanded="true" signature="3484:3894" ph="..." />
-            <marker date="1509111789776" expanded="true" signature="3490:3837" ph="..." />
           </folding>
         </state>
       </provider>
@@ -641,11 +612,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/data/celebA/000015.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/celebA/000016.jpg">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
@@ -670,6 +636,31 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/celebA/000016.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="7" column="20" lean-forward="true" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
+          <folding>
+            <marker date="1509111789776" expanded="true" signature="3484:3894" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="36" column="35" lean-forward="false" selection-start-line="36" selection-start-column="35" selection-end-line="36" selection-end-column="35" />
+          <folding>
+            <element signature="e#60#91#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
