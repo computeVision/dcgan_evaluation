@@ -9,11 +9,12 @@ from six.moves import xrange
 
 from ops import *
 from utils import *
-
+import matplotlib.pyplot as plt
 
 def conv_out_size_same(size, stride):
     return int(math.ceil(float(size) / float(stride)))
 
+counter = 0
 
 class DCGAN(object):
     def __init__(self, sess, cfg, input_height=108, input_width=108, crop=True,
@@ -149,7 +150,7 @@ class DCGAN(object):
 
         self.saver = tf.train.Saver()
 
-    def train(self, config):
+    def train(self, config, cfg):
         d_optim = tf.train.AdamOptimizer(config.learning_rate, beta1=config.beta1) \
             .minimize(self.d_loss, var_list=self.d_vars)
         g_optim = tf.train.AdamOptimizer(config.learning_rate, beta1=config.beta1) \
@@ -163,9 +164,25 @@ class DCGAN(object):
                                     self.G_sum, self.d_loss_fake_sum, self.g_loss_sum])
         self.d_sum = merge_summary(
             [self.z_sum, self.d_sum, self.d_loss_real_sum, self.d_loss_sum])
-        self.writer = SummaryWriter("/home/jester/data/dcgan/logs", self.sess.graph)
+        self.writer = SummaryWriter(config.logs, self.sess.graph)
 
-        sample_z = np.random.uniform(-1, 1, size=(self.sample_num, self.z_dim))
+        #################################################################################
+        #################################################################################
+        # config the distribution
+        if cfg.random_vec()['uniform']:
+            sample_z = np.random.uniform(-1, 1,size=(self.sample_num, self.z_dim))
+        elif cfg.random_vec()['uniform100']:
+            sample_z = np.random.uniform(-100, 100,size=(self.sample_num, self.z_dim))
+        elif cfg.random_vec()['normal']:
+            mu, sigma = 0, 0.2
+            sample_z = np.random.normal(mu, sigma, size=(64,100))
+        else:
+            sys.exit('no distribution')
+
+        print('----------------------------------------------')
+        print('sample z', sample_z.shape)
+        print('----------------------------------------------')
+        #################################################################################
 
         if config.dataset == 'mnist':
             sample_inputs = self.data_X[0:self.sample_num]
@@ -193,7 +210,6 @@ class DCGAN(object):
             print(" [*] Load SUCCESS")
         else:
             print(" [!] Load failed...")
-
 
         print('config.epoch', config.epoch)
         for epoch in xrange(config.epoch):
@@ -225,8 +241,7 @@ class DCGAN(object):
                     else:
                         batch_images = np.array(batch).astype(np.float32)
 
-                batch_z = np.random.uniform(-1, 1, [config.batch_size, self.z_dim]) \
-                    .astype(np.float32)
+                batch_z = np.random.uniform(-1, 1, [config.batch_size, self.z_dim]).astype(np.float32)
 
                 if config.dataset == 'mnist':
                     print('config.dataset == mnist')
@@ -288,8 +303,8 @@ class DCGAN(object):
                 print("Epoch: [%2d] [%4d/%4d] time: %4.4f, d_loss: %.8f, g_loss: %.8f" \
                       % (epoch, idx, batch_idxs,
                          time.time() - start_time, errD_fake + errD_real, errG))
-
-                if np.mod(counter, 100) == 1:
+                # import pdb; pdb.set_trace()
+                if np.mod(counter, 50) == 1:
                     if config.dataset == 'mnist':
                         samples, d_loss, g_loss = self.sess.run(
                             [self.sampler, self.d_loss, self.g_loss],
@@ -304,22 +319,26 @@ class DCGAN(object):
                         print("[Sample] d_loss: %.8f, g_loss: %.8f" % (d_loss, g_loss))
                     else:
                         try:
-                            samples, d_loss, g_loss = self.sess.run(
-                                [self.sampler, self.d_loss, self.g_loss],
-                                feed_dict={
-                                    self.z: sample_z,
-                                    self.inputs: sample_inputs,
-                                },
-                            )
+                            samples, d_loss, g_loss = self.sess.run([self.sampler, self.d_loss, self.g_loss],
+                                feed_dict={self.z: sample_z, self.inputs: sample_inputs,},)
+
+
                             save_images(samples, image_manifold_size(samples.shape[0]),
-                                        './{}/train_{:02d}_{:04d}.png'.format(config.sample_dir, epoch, idx))
+                                        '{}/train_{:02d}_{:04d}.png'.format(config.sample_dir, epoch, idx))
                             print("[Sample] d_loss: %.8f, g_loss: %.8f" % (d_loss, g_loss))
+                            # import pdb; pdb.set_trace()
+                            for sample in range(samples.shape[0]):
+                                scipy.misc.imsave('{}/train_{:02d}_{:04d}.png'.format(config.test, sample, 0), samples[sample] )
+                                # plt.imsave('{}/train_{:02d}_{:04d}.png'.format(config.test, sample, 0), samples[sample])
+                            # import pdb; pdb.set_trace()
                         except:
                             print("one pic error!...")
 
                 if np.mod(counter, 500) == 2:
                     self.save(config.checkpoint_dir, counter)
 
+    #################################################################################
+    # different configurations from config.yaml
     def discriminator(self, image, y=None, reuse=False):
         with tf.variable_scope("discriminator") as scope:
             if reuse:
@@ -347,7 +366,6 @@ class DCGAN(object):
                     h3 = tf.nn.tanh(self.d_bn3(conv2d(h2, self.df_dim * 8, name='d_h3_conv')))
                 else:
                     sys.exit('err: no activation function')
-
                 h4 = linear(tf.reshape(h3, [self.batch_size, -1]), 1, 'd_h4_lin')
                 return tf.nn.sigmoid(h4), h4
             else:
@@ -369,6 +387,8 @@ class DCGAN(object):
 
                 return tf.nn.sigmoid(h3), h3
 
+    #################################################################################
+    # diffrent configuration from config.yaml
     def generator(self, z, y=None):
         with tf.variable_scope("generator") as scope:
             if not self.y_dim:
@@ -459,6 +479,61 @@ class DCGAN(object):
 
                 return tf.nn.sigmoid(
                     deconv2d(h2, [self.batch_size, s_h, s_w, self.c_dim], name='g_h3'))
+
+
+    def generator(self, z, y=None):
+        with tf.variable_scope("generator") as scope:
+            if not self.y_dim:
+                s_h, s_w = self.output_height, self.output_width
+                s_h2, s_w2 = conv_out_size_same(s_h, 2), conv_out_size_same(s_w, 2)
+                s_h4, s_w4 = conv_out_size_same(s_h2, 2), conv_out_size_same(s_w2, 2)
+                s_h8, s_w8 = conv_out_size_same(s_h4, 2), conv_out_size_same(s_w4, 2)
+                s_h16, s_w16 = conv_out_size_same(s_h8, 2), conv_out_size_same(s_w8, 2)
+
+                # project `z` and reshape
+                self.z_, self.h0_w, self.h0_b = linear(
+                    z, self.gf_dim*8*s_h16*s_w16, 'g_h0_lin', with_w=True)
+
+                self.h0 = tf.reshape(
+                    self.z_, [-1, s_h16, s_w16, self.gf_dim * 8])
+                h0 = tf.nn.relu(self.g_bn0(self.h0))
+
+                self.h1, self.h1_w, self.h1_b = deconv2d(
+                    h0, [self.batch_size, s_h8, s_w8, self.gf_dim*4], name='g_h1', with_w=True)
+                h1 = tf.nn.relu(self.g_bn1(self.h1))
+
+                h2, self.h2_w, self.h2_b = deconv2d(
+                    h1, [self.batch_size, s_h4, s_w4, self.gf_dim*2], name='g_h2', with_w=True)
+                h2 = tf.nn.relu(self.g_bn2(h2))
+
+                h3, self.h3_w, self.h3_b = deconv2d(
+                    h2, [self.batch_size, s_h2, s_w2, self.gf_dim*1], name='g_h3', with_w=True)
+                h3 = tf.nn.relu(self.g_bn3(h3))
+
+                h4, self.h4_w, self.h4_b = deconv2d(
+                    h3, [self.batch_size, s_h, s_w, self.c_dim], name='g_h4', with_w=True)
+
+                return tf.nn.tanh(h4)
+            else:
+                s_h, s_w = self.output_height, self.output_width
+                s_h2, s_h4 = int(s_h/2), int(s_h/4)
+                s_w2, s_w4 = int(s_w/2), int(s_w/4)
+
+                # yb = tf.expand_dims(tf.expand_dims(y, 1),2)
+                yb = tf.reshape(y, [self.batch_size, 1, 1, self.y_dim])
+                z = concat([z, y], 1)
+
+                h0 = tf.nn.relu(self.g_bn0(linear(z, self.gfc_dim, 'g_h0_lin')))
+                h0 = concat([h0, y], 1)
+
+                h1 = tf.nn.relu(self.g_bn1(linear(h0, self.gf_dim*2*s_h4*s_w4, 'g_h1_lin')))
+                h1 = tf.reshape(h1, [self.batch_size, s_h4, s_w4, self.gf_dim * 2])
+                h1 = conv_cond_concat(h1, yb)
+                h2 = tf.nn.relu(self.g_bn2(deconv2d(h1, [self.batch_size, s_h2, s_w2, self.gf_dim * 2], name='g_h2')))
+                h2 = conv_cond_concat(h2, yb)
+
+                return tf.nn.sigmoid(deconv2d(h2, [self.batch_size, s_h, s_w, self.c_dim], name='g_h3'))
+
 
     def sampler(self, z, y=None):
         with tf.variable_scope("generator") as scope:

@@ -2,6 +2,9 @@ import os
 import scipy.misc
 import numpy as np
 
+# start with
+print('python src/main.py --dataset celebA --input_height=108 --train --crop')
+
 from model import DCGAN
 from utils import pp, visualize, to_json, show_all_variables
 from config import *
@@ -24,8 +27,11 @@ flags.DEFINE_string("dataset", "celebA", "The name of dataset [celebA, mnist, ls
 flags.DEFINE_string("input_fname_pattern", "*.jpg", "Glob pattern of filename of input images [*]")
 flags.DEFINE_string("checkpoint_dir", "/home/jester/data/dcgan/checkpoint",
                     "Directory name to save the checkpoints [checkpoint]")
-flags.DEFINE_string("sample_dir", "/home/jester/data/dcgan/samples",
+flags.DEFINE_string("sample_dir", "/home/jester/Documents/dcgan_runs/",
                     "Directory name to save the image samples [samples]")
+flags.DEFINE_string("logs", "/home/jester/Documents/dcgan_runs/", "logs")
+flags.DEFINE_string("test", "/home/jester/Documents/dcgan_runs/", "test")
+flags.DEFINE_string("visualize_path", "/home/jester/Documents/dcgan_runs/", "visualize_path")
 flags.DEFINE_boolean("train", False, "True for training, False for testing [False]")
 flags.DEFINE_boolean("crop", False, "True for training, False for testing [False]")
 flags.DEFINE_boolean("visualize", True, "True for visualizing, False for nothing [False]")
@@ -36,6 +42,8 @@ def main(_):
     pp.pprint(flags.FLAGS.__flags)
 
     cfg = Cfg('configs/config.yaml')
+    run_nr = create_directories(cfg)
+    print(run_nr, '<--------------------')
 
     if FLAGS.input_width is None:
         FLAGS.input_width = FLAGS.input_height
@@ -43,8 +51,10 @@ def main(_):
         FLAGS.output_width = FLAGS.output_height
 
     if not os.path.exists(FLAGS.checkpoint_dir):
+        print('-------------- hallo')
         os.makedirs(FLAGS.checkpoint_dir)
     if not os.path.exists(FLAGS.sample_dir):
+        print('--------------bivo')
         os.makedirs(FLAGS.sample_dir)
 
     # gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
@@ -85,10 +95,11 @@ def main(_):
         show_all_variables()
 
         if FLAGS.train:
-            dcgan.train(FLAGS)
+            dcgan.train(FLAGS, cfg)
         else:
             if not dcgan.load(FLAGS.checkpoint_dir)[0]:
-                raise Exception("[!] Train a model first, then run test mode")
+                raise \
+                    ("[!] Train a model first, then run test mode")
 
         # to_json("./web/js/layers.js", [dcgan.h0_w, dcgan.h0_b, dcgan.g_bn0],
         #                 [dcgan.h1_w, dcgan.h1_b, dcgan.g_bn1],

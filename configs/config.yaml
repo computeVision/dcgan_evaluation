@@ -1,5 +1,3 @@
-
-# $ python main.py --dataset mnist --input_height=28 --output_height=28 --train
 # $ python main.py --dataset celebA --input_height=108 --train --crop
 
 params:
@@ -12,16 +10,24 @@ params:
   # output_height: 28
   # train: train
 
+paths:
+  path_to_runs: Documents/dcgan_runs
+  path_to_checkpoints: Documents/dcgan_runs
+
 testing_benchmark:
+  batch_norm: True
   generator:
     relu: True
-    lrelu: True
-    tanh: True
-    pooling: True
-    batch_norm: True
+    lrelu: False
+    tanh: False
 
   degenerator:
-    relu: True
+    relu: False
     lrelu: True
-    tanh: True
-    batch_norm: True
+    tanh: False
+    pooling: False
+
+random_vector:
+    uniform: True
+    uniform100: False
+    normal: False

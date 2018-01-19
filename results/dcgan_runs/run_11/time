@@ -1,0 +1,9 @@
+ sample_z = np.random.uniform(-100, 100,size=(self.sample_num, self.z_dim))
+
+
+Epoch: [24] [3159/3165] time: 90748.7383, d_loss: 0.92514336, g_loss: 1.23597407
+Epoch: [24] [3160/3165] time: 90709.6811, d_loss: 1.11498129, g_loss: 0.93409461
+Epoch: [24] [3161/3165] time: 90710.3445, d_loss: 0.47298679, g_loss: 2.36731601
+Epoch: [24] [3162/3165] time: 90712.5677, d_loss: 1.11017382, g_loss: 0.91197336
+Epoch: [24] [3163/3165] time: 90713.6779, d_loss: 0.87819797, g_loss: 1.00341511
+Epoch: [24] [3164/3165] time: 90718.8953, d_loss: 0.31460467, g_loss: 2.61946487

@@ -6,53 +6,8 @@ import numpy as np
 import tensorflow as tf
 import yaml
 
-# defines
-# ADAM = 'adam'
-# tf.logging.set_verbosity(tf.logging.INFO)
-#
 flags = tf.app.flags
 FLAGS = flags.FLAGS
-#
-# flags.DEFINE_string('checkpoints_dir', '/tmp/checkpoints/', 'checkpoints')
-# flags.DEFINE_string('tensorboard_dir', '/tmp/occ_growing/', 'tb_dir')
-# flags.DEFINE_float('learning_rate', 0.001, 'learning_rate')
-# flags.DEFINE_float('lambda', 0.1, 'regularization')
-# flags.DEFINE_integer('training_epochs', 3000, 'training_epochs')
-# flags.DEFINE_boolean('use_checkpoint', False, 'use_checkpoint')
-# flags.DEFINE_boolean('save_checkpoint', False, 'save_checkpoint')
-#
-# flags.DEFINE_boolean('use_locking', False, 'use_locking')
-#
-# # momentum
-# flags.DEFINE_float('momentum', 0.01, 'momentum')
-# flags.DEFINE_boolean('use_nesterov', True, 'use_nesterov')
-#
-# # adelta
-# flags.DEFINE_float('rho', 0.001, 'rho')
-# flags.DEFINE_float('epsilon', 0.001, 'epsilon')
-#
-# # adagradda
-# flags.DEFINE_integer('global_step', 1, 'global_step')
-# flags.DEFINE_integer('initial_gradient_squared_accumulator_value', 1, 'initial_gradient_squared_accumulator_value')
-# flags.DEFINE_float('l1_regularization_strength', 0.0, 'l1_regularization_strength')
-# flags.DEFINE_float('l2_regularization_strength', 0.0, 'l2_regularization_strength')
-#
-# # ftrl
-# flags.DEFINE_float('learning_rate_power', -0.5, 'learning_rate_power')
-# flags.DEFINE_float('initial_accumulator_value', 0.1, 'initial_accumulator_value')
-# flags.DEFINE_float('l2_shrinkage_regularization_strength', 0.0, 'l2_shrinkage_regularization_strength')
-#
-# # rmsprop
-# flags.DEFINE_float('decay', 0.9, 'decay')
-#
-# # syncreplicas
-# flags.DEFINE_float('opt', 0.9, 'opt')
-# flags.DEFINE_float('replicas_to_aggregate', 0.9, 'replicas_to_aggregate')
-# flags.DEFINE_integer('total_num_replicas', 0, 'total_num_replicas')
-# flags.DEFINE_integer('variable_avarages', 0, 'variable_avarages')
-# flags.DEFINE_integer('variable_to_avarages', 0, 'variable_to_avarages')
-#
-# flags.DEFINE_string('addition', 'addition', 'concatination')
 
 
 class Cfg:
@@ -78,9 +33,17 @@ class Cfg:
     def discriminator(self):
         return self.__degenerator
 
+    def paths(self):
+        return self.__paths
+
+    def random_vec(self):
+        return self.__random_vector
+
     def __init__(self, file_path):
         self.__generator = {}
         self.__degenerator = {}
+        self.__paths = {}
+        self.__random_vector = {}
 
         with open(file_path, 'r') as ymlfile:
             home = os.environ['HOME'] + "/"
@@ -92,20 +55,27 @@ class Cfg:
             if self.__dataset == 'mnist':
                 self.__output_height = self.__cfg['params']['output_height']
 
+            self.__paths['path_to_runs'] = home + self.__cfg['paths']['path_to_runs']
+            self.__paths['path_to_checkpoints'] = home + self.__cfg['paths']['path_to_checkpoints']
+
             self.__generator['relu'] = self.__cfg['testing_benchmark']['generator']['relu']
             self.__generator['lrelu'] = self.__cfg['testing_benchmark']['generator']['lrelu']
             self.__generator['tanh'] = self.__cfg['testing_benchmark']['generator']['tanh']
-            self.__generator['pooling'] = self.__cfg['testing_benchmark']['generator']['pooling']
-            self.__generator['batch_norm'] = self.__cfg['testing_benchmark']['generator']['batch_norm']
+            self.__generator['batch_norm'] = self.__cfg['testing_benchmark']['batch_norm']
 
             self.__degenerator['relu'] = self.__cfg['testing_benchmark']['degenerator']['relu']
             self.__degenerator['lrelu'] = self.__cfg['testing_benchmark']['degenerator']['lrelu']
             self.__degenerator['tanh'] = self.__cfg['testing_benchmark']['degenerator']['tanh']
-            self.__degenerator['batch_norm'] = self.__cfg['testing_benchmark']['degenerator']['batch_norm']
+            self.__degenerator['pooling'] = self.__cfg['testing_benchmark']['degenerator']['pooling']
+            self.__degenerator['batch_norm'] = self.__generator['batch_norm']
+
+            self.__random_vector['uniform'] = self.__cfg['random_vector']['uniform']
+            self.__random_vector['uniform100'] = self.__cfg['random_vector']['uniform100']
+            self.__random_vector['normal'] = self.__cfg['random_vector']['normal']
+
 
         self.print_members()
         self.print_flags(FLAGS)
-
 
     def get_filenames(self, super_dir, subdir, ending="/*.png"):
         tmp = {}
@@ -115,28 +85,65 @@ class Cfg:
             tmp.update({img: sorted(glob.glob(super_dir + "/" + img + ending))})
         return tmp
 
-
     def print_members(self):
         attrs = vars(self)
         print(', '.join("%s: %s\n" % item for item in attrs.items()))
-
 
     def print_flags(self, obj):
         attrs = vars(obj)
         for key, car in attrs['__flags'].items():
             print(key, ": ", car)
 
-    # def init_optimizer(self, name):
-    #     # self.__cfg[]
-    #     if name == ADAM:
-    #         FLAGS.learning_rate = self.__cfg["optimizer"]["adam"]['learning_rate']
-    #     elif name == MOMENTUM:
-    #         FLAGS.learning_rate = self.__cfg["optimizer"]["momentum"]['learning_rate']
-    #         FLAGS.momentum = self.__cfg["optimizer"]["momentum"]['momentum']
-    #         FLAGS.use_locking = self.__cfg["optimizer"]["momentum"]['use_locking']
-    #         FLAGS.use_nesterov = self.__cfg["optimizer"]["momentum"]['use_nesterov']
-    #     else:
-    #         sys.exit('err: no optimizer found!')
+
+def check_runs(dir):
+    print("check runs dir: ", dir)
+    previous_runs = [os.path.basename(x) for x in glob.glob(dir + '/run_*')]
+    if len(previous_runs) == 0:
+        run_number = 1
+    else:
+        run_number = max([int(s.split('run_')[1]) for s in previous_runs]) + 1
+
+    return "%002d" % run_number
+
+
+def create_directories(cfg):
+    dir = cfg.paths()['path_to_runs']
+    run_nr = check_runs(dir)
+    print('run nr: ', run_nr)
+
+    cfg.paths()['path_to_runs'] = dir + '/' + 'run_' + run_nr
+    FLAGS.sample_dir = cfg.paths()['path_to_runs'] + '/samples'
+    if not os.path.exists(FLAGS.sample_dir):
+      os.makedirs(FLAGS.sample_dir)
+
+    print('debug', cfg.paths()['path_to_runs'])
+
+    if not os.path.exists( cfg.paths()['path_to_runs'] + '/train'):
+        os.makedirs(cfg.paths()['path_to_runs'] + '/train/')
+
+    cfg.paths()['path_to_checkpoints'] = cfg.paths()['path_to_checkpoints'] + '/' + 'run_' + run_nr + '/checkpoint'
+    FLAGS.checkpoint_dir = cfg.paths()['path_to_checkpoints']
+    if not os.path.exists( cfg.paths()['path_to_checkpoints']):
+        os.makedirs(cfg.paths()['path_to_checkpoints'] )
+
+    FLAGS.logs = cfg.paths()['path_to_runs'] + '/logs'
+    if not os.path.exists(FLAGS.logs):
+        os.makedirs(FLAGS.logs)
+
+    FLAGS.test = cfg.paths()['path_to_runs'] + '/test'
+    if not os.path.exists(FLAGS.test):
+        os.makedirs(FLAGS.test)
+
+    FLAGS.visualize_path = cfg.paths()['path_to_runs'] + '/train'
+
+    # import pdb; pdb.set_trace()
+
+    import shutil
+    shutil.copy('src/model.py', cfg.paths()['path_to_runs'] + '/model.py')
+    shutil.copy('configs/config.yaml', cfg.paths()['path_to_runs'] + '/config.yaml')
+
+    return run_nr
+
 
 def send_mail(global_time):
     import email
@@ -162,6 +169,6 @@ def send_mail(global_time):
     s.ehlo()  # Hostname to send for this command defaults to the fully qualified domain name of the local host.
     s.starttls()  # Puts connection to SMTP server in TLS mode
     s.ehlo()
-    s.login('peters_kotlett@hotmail.com', pw)
+    s.login('***@hotmail.com', pw)
     s.sendmail(msg['From'], msg['To'], msg.as_string())
     s.quit()

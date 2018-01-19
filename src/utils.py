@@ -174,7 +174,8 @@ def visualize(sess, dcgan, config, option):
   if option == 0:
     z_sample = np.random.uniform(-0.5, 0.5, size=(config.batch_size, dcgan.z_dim))
     samples = sess.run(dcgan.sampler, feed_dict={dcgan.z: z_sample})
-    save_images(samples, [image_frame_dim, image_frame_dim], '/home/jester/data/dcgan/samples/test_%s.png' % strftime("%Y%m%d%H%M%S", gmtime()))
+    print ('visualize', config.visualize_path + '/test_%s.png' % strftime("%Y%m%d%H%M%S", gmtime()))
+    save_images(samples, [image_frame_dim, image_frame_dim], config.visualize_path + '/test_%s.png' % strftime("%Y%m%d%H%M%S", gmtime()))
   elif option == 1:
     values = np.arange(0, 1, 1./config.batch_size)
     for idx in xrange(100):

@@ -34,8 +34,9 @@ class batch_norm(object):
       self.name = name
 
   def __call__(self, x, train=True):
-    return tf.contrib.layers.batch_norm(x, decay=self.momentum, updates_collections=None, epsilon=self.epsilon,
-                      scale=True, is_training=train, scope=self.name)
+    #return tf.contrib.layers.batch_norm(x, decay=self.momentum, updates_collections=None, epsilon=self.epsilon,
+    #                  scale=True, is_training=train, scope=self.name)
+    return x
 
 
 def conv_cond_concat(x, y):
@@ -97,8 +98,7 @@ def linear(input_, output_size, scope=None, stddev=0.02, bias_start=0.0, with_w=
   shape = input_.get_shape().as_list()
 
   with tf.variable_scope(scope or "Linear"):
-    matrix = tf.get_variable("Matrix", [shape[1], output_size], tf.float32,
-                 tf.random_normal_initializer(stddev=stddev))
+    matrix = tf.get_variable("Matrix", [shape[1], output_size], tf.float32, tf.random_normal_initializer(stddev=stddev))
     bias = tf.get_variable("bias", [output_size],
       initializer=tf.constant_initializer(bias_start))
     if with_w:
